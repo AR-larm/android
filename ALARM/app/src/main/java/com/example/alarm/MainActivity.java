@@ -12,6 +12,10 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -19,6 +23,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
+    private FragmentPagerAdapter fragmentPagerAdapter;
     // 알람 시간
     private Calendar calendar;
 
@@ -27,22 +32,35 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        //frag_monday setting하기
+        setContentView(R.layout.frag_monday);
+
 
         this.calendar = Calendar.getInstance();
         // 현재 날짜 표시
         displayDate();
 
         this.timePicker = findViewById(R.id.timePicker);
-
+        //Calender,알람버튼에 리스너 추가
         findViewById(R.id.btnCalendar).setOnClickListener(mClickListener);
         findViewById(R.id.btnAlarm).setOnClickListener(mClickListener);
+
+        setContentView(R.layout.activity_main);
+        //뷰페이저 셋팅
+        ViewPager  viewPager=findViewById(R.id.ViewPager);
+        fragmentPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
+
+        TabLayout tabLayout=findViewById(R.id.tab_layout);
+        viewPager.setAdapter(fragmentPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+
+
     }
 
     /* 날짜 표시 */
     private void displayDate() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        ((TextView) findViewById(R.id.txtDate)).setText(format.format(this.calendar.getTime()));
+     //((TextView) findViewById(R.id.txtDate)).setText(format.format(this.calendar.getTime()));
     }
 
     /* DatePickerDialog 호출 */
