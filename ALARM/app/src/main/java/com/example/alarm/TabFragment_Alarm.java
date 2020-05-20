@@ -16,15 +16,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.alarm.alarm_card.Adapter;
+import com.example.alarm.alarm_card.Model;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 public class TabFragment_Alarm extends Fragment {
     private View view;
+    List<Model> models;
+    Adapter adapter;
     // 알람 시간
     private Calendar calendar;
-
+    static int cnt=3;
     private TimePicker timePicker;
     public static TabFragment_Alarm newinstance()
     {
@@ -86,7 +93,12 @@ public class TabFragment_Alarm extends Fragment {
 
         // Receiver 설정
         Intent intent = new Intent(view.getContext(), AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(view.getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Fragment fragment =new TabFragment_Info();
+        Bundle bundle =new Bundle();
+        bundle.putInt("cnt",cnt);
+        fragment.setArguments(bundle);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(view.getContext(), cnt++, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // 알람 설정
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(view.getContext().ALARM_SERVICE);
@@ -94,8 +106,9 @@ public class TabFragment_Alarm extends Fragment {
 
         // Toast 보여주기 (알람 시간 표시)
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        Toast.makeText(view.getContext(), "Alarm : " + format.format(calendar.getTime()), Toast.LENGTH_LONG).show();
+        Toast.makeText(view.getContext(), "Alarm : "+Integer.toString(cnt) + format.format(calendar.getTime()), Toast.LENGTH_LONG).show();
     }
+
 
     View.OnClickListener mClickListener = new View.OnClickListener() {
         @Override
