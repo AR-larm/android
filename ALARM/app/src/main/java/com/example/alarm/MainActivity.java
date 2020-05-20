@@ -1,127 +1,47 @@
 package com.example.alarm;
 
-import android.app.AlarmManager;
-import android.app.DatePickerDialog;
-import android.app.PendingIntent;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.DatePicker;
-import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
-
 public class MainActivity extends AppCompatActivity {
 
-    private FragmentPagerAdapter fragmentPagerAdapter;
-    // 알람 시간
-    private Calendar calendar;
-
-    private TimePicker timePicker;
+    private TabLayout mTabLayout;
+    private ViewPager mViewPager;
+    private MainPagerAdapter mPageAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //frag_monday setting하기
-        setContentView(R.layout.frag_monday);
-
-
-        this.calendar = Calendar.getInstance();
-        // 현재 날짜 표시
-        displayDate();
-
-        this.timePicker = findViewById(R.id.timePicker);
-        //Calender,알람버튼에 리스너 추가
-        findViewById(R.id.btnCalendar).setOnClickListener(mClickListener);
-        findViewById(R.id.btnAlarm).setOnClickListener(mClickListener);
-
         setContentView(R.layout.activity_main);
-        //뷰페이저 셋팅
-        ViewPager  viewPager=findViewById(R.id.ViewPager);
-        fragmentPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
 
-        TabLayout tabLayout=findViewById(R.id.tab_layout);
-        viewPager.setAdapter(fragmentPagerAdapter);
-        tabLayout.setupWithViewPager(viewPager);
+        mTabLayout = findViewById(R.id.main_tab);
+        mViewPager = findViewById(R.id.viewpager);
+        mPageAdapter = new MainPagerAdapter(getSupportFragmentManager());
 
+        mViewPager.setAdapter(mPageAdapter);
 
-    }
-
-    /* 날짜 표시 */
-    private void displayDate() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-     //((TextView) findViewById(R.id.txtDate)).setText(format.format(this.calendar.getTime()));
-    }
-
-    /* DatePickerDialog 호출 */
-    private void showDatePicker() {
-        DatePickerDialog dialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                // 알람 날짜 설정
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, month);
-                calendar.set(Calendar.DATE, dayOfMonth);
-
-                // 날짜 표시
-                displayDate();
+            public void onTabSelected(TabLayout.Tab tab) {
+                mViewPager.setCurrentItem(tab.getPosition());
             }
-        }, this.calendar.get(Calendar.YEAR), this.calendar.get(Calendar.MONTH), this.calendar.get(Calendar.DAY_OF_MONTH));
 
-        dialog.show();
-    }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
 
-    /* 알람 등록 */
-    private void setAlarm() {
-        // 알람 시간 설정
-        this.calendar.set(Calendar.HOUR_OF_DAY, this.timePicker.getHour());
-        this.calendar.set(Calendar.MINUTE, this.timePicker.getMinute());
-        this.calendar.set(Calendar.SECOND, 0);
-
-        // 현재일보다 이전이면 등록 실패
-        if (this.calendar.before(Calendar.getInstance())) {
-            Toast.makeText(this, "알람시간이 현재시간보다 이전일 수 없습니다.", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        // Receiver 설정
-        Intent intent = new Intent(this, AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        // 알람 설정
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, this.calendar.getTimeInMillis(), pendingIntent);
-
-        // Toast 보여주기 (알람 시간 표시)
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        Toast.makeText(this, "Alarm : " + format.format(calendar.getTime()), Toast.LENGTH_LONG).show();
-    }
-
-    View.OnClickListener mClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.btnCalendar:
-                    // 달력
-                    showDatePicker();
-
-                    break;
-                case R.id.btnAlarm:
-                    // 알람 등록
-                    setAlarm();
-
-                    break;
             }
-        }
-    };
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+    }
 }
