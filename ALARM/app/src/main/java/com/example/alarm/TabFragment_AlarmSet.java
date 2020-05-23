@@ -24,23 +24,23 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 // 원래 info 였던 페이지 알람 설정 기능을 함
-public class TabFragment_Alarm2 extends Fragment {
+public class TabFragment_AlarmSet extends Fragment {
     private View view;
     List<Model> models;
     Adapter adapter;
     // 알람 시간
     private Calendar calendar;
-    static int cnt=3; //이렇게 해둔거구나 일단. static 지우고 int cnt = 0 하면 변환됨
+    static int cnt=3; //수정부분
     private TimePicker timePicker;
-    public static TabFragment_Alarm2 newinstance()
+    public static TabFragment_AlarmSet newinstance()
     {
-        TabFragment_Alarm2 tabFragmentAlarm =new TabFragment_Alarm2();
-        return tabFragmentAlarm;
+        TabFragment_AlarmSet tabFragmentAlarmSet =new TabFragment_AlarmSet();
+        return tabFragmentAlarmSet;
     }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedinstanceState){
-        view=inflater.inflate(R.layout.tab_fragment_alarm2,container,false);
+        view=inflater.inflate(R.layout.tab_fragment_alarmset,container,false);
         this.calendar = Calendar.getInstance();
         // 현재 날짜 표시
         displayDate();

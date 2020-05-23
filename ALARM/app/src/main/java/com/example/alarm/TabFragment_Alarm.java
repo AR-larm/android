@@ -20,7 +20,7 @@ import java.util.List;
 
 public class TabFragment_Alarm extends Fragment {
 
-    static int cnt=4;
+    static int cnt= 3;
     ViewPager alarm_viewpager;
     Adapter adapter;
     List<Model> models;
