@@ -2,11 +2,11 @@ package com.example.alarm;
 
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
+        import androidx.annotation.Nullable;
+        import androidx.appcompat.app.AppCompatActivity;
+        import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.tabs.TabLayout;
+        import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,13 +17,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        mTabLayout = findViewById(R.id.main_tab);
-        mViewPager = findViewById(R.id.viewpager);
+
+        setContentView(R.layout.sa_activity_main);
+        mTabLayout = findViewById(R.id.sa_main_tab);
+        mViewPager = findViewById(R.id.sa_viewpager);
+
+
+        // SA : tester ui added!
+        // activate this paragraph & inactivate old one to check ui
+        // + MainpagerAdapter.java에 있는 것도 활성화 시켜주세요!
+        /*
+        setContentView(R.layout.sa_activity_main);
+        mTabLayout = findViewById(R.id.sa_main_tab);
+        mViewPager = findViewById(R.id.sa_viewpager);
+        */
+
         mPageAdapter = new MainPagerAdapter(getSupportFragmentManager());
-
         mViewPager.setAdapter(mPageAdapter);
+
+
+
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

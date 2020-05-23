@@ -42,10 +42,10 @@ public class TabFragment_Info extends Fragment {
         models = new ArrayList<>();
         for(int i=0;i<TabFragment_Alarm.cnt;i++)
         {
-            models.add(new Model(R.drawable.brochure, Integer.toString(i), Integer.toString(i)+"번째알"));
+            models.add(new Model(R.drawable.brochure, Integer.toString(i), Integer.toString(i)+"번째알람"));
         }
 
-람
+
         adapter = new Adapter(models, getContext());
 
         alarm_viewpager=view.findViewById(R.id.alarm_viewpager);
