@@ -32,15 +32,6 @@ public class TabFragment_Info extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tab_fragment_info, null);
 
-//        Button btn1 = (Button) Objects.requireNonNull(getView()).findViewById(R.id.button);
-//
-//        btn1.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                Intent intent1 = new Intent(getActivity(), SettingsActivity.class);
-//                startActivity(intent1);
-//            }
-//        });
-
         return view;
     }
 }

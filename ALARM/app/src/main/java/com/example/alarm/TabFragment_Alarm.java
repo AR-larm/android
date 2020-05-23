@@ -80,6 +80,14 @@ public class TabFragment_Alarm extends Fragment {
             }
         });
 
+//        Button btn1 = (Button) Objects.requireNonNull(getView()).findViewById(R.id.button);
+//
+//        btn1.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Intent intent1 = new Intent(getActivity(), SettingsActivity.class);
+//                startActivity(intent1);
+//            }
+//        });
 
         return view;
     }
