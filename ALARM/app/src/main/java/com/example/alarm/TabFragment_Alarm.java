@@ -20,7 +20,7 @@ import java.util.List;
 
 public class TabFragment_Alarm extends Fragment {
 
-    static int cnt=3;
+    static int cnt=4;
     ViewPager alarm_viewpager;
     Adapter adapter;
     List<Model> models;
@@ -30,7 +30,7 @@ public class TabFragment_Alarm extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.tab_fragment_info2, null);
+        View view = inflater.inflate(R.layout.tab_fragment_alarm, null);
 
         if(getArguments()!=null)
         {
