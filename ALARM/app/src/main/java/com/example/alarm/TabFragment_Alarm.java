@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,10 +19,11 @@ import com.example.alarm.alarm_card.Model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class TabFragment_Alarm extends Fragment {
 
-    static int cnt= 3;
+    int cnt= 0;
     ViewPager alarm_viewpager;
     Adapter adapter;
     List<Model> models;
@@ -32,6 +35,30 @@ public class TabFragment_Alarm extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tab_fragment_alarm, null);
 
+        Button button1 = (Button)view.findViewById(R.id.btnSet);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) Objects.requireNonNull(getActivity())).replaceFragment(TabFragment_AlarmSet.newinstance());
+            }
+        });
+
+        Button button2 = (Button)view.findViewById(R.id.btnSet2);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) Objects.requireNonNull(getActivity())).replaceFragment(TabFragment_AlarmSet.newinstance());
+            }
+        });
+
+//        ImageButton button3 = (ImageButton)view.findViewById(R.id.image);
+//        button1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ((MainActivity) Objects.requireNonNull(getActivity())).replaceFragment(TabFragment_AlarmSet.newinstance());
+//            }
+//        });
+
         if(getArguments()!=null)
         {
             cnt=getArguments().getInt("cnt");
@@ -39,7 +66,7 @@ public class TabFragment_Alarm extends Fragment {
         }
         Toast.makeText(view.getContext(), "Alarm : " , Toast.LENGTH_LONG).show();
         models = new ArrayList<>();
-        for(int i = 1; i< TabFragment_Alarm.cnt + 1; i++)
+        for(int i = 0; i< TabFragment_AlarmSet.cnt; i++)
         {
             models.add(new Model(R.drawable.brochure, Integer.toString(i), Integer.toString(i)+"번째알람"));
         }

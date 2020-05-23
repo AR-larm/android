@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 public class MainPagerAdapter extends FragmentPagerAdapter {
-    private static int pagecount  = 5;
+    private static int pagecount  = 4;
     public MainPagerAdapter(@NonNull FragmentManager fm) {
         super(fm);
     }
@@ -27,9 +27,6 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
             case 3:
                 TabFragment_Setting tabFragment_setting = new TabFragment_Setting();
                 return tabFragment_setting;
-            case 4:
-                TabFragment_AlarmSet tabFragment_alarmSet = new TabFragment_AlarmSet();
-                return tabFragment_alarmSet;
 
             default:
                 return null;
