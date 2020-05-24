@@ -3,8 +3,10 @@ package com.example.alarm;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +31,10 @@ public class TabFragment_Alarm extends Fragment {
     private View view;
     List<Model> models;
     Adapter adapter;
+    AlarmDB  pdb;
+    Context mContext;
+    String[] sSize;
+
     // 알람 시간
     private Calendar calendar;
     static int cnt=3;
@@ -60,26 +66,15 @@ public class TabFragment_Alarm extends Fragment {
         //((TextView) findViewById(R.id.txtDate)).setText(format.format(this.calendar.getTime()));
     }
 
-    /* DatePickerDialog 호출 */
-    private void showDatePicker() {
-        DatePickerDialog dialog = new DatePickerDialog(view.getContext(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                // 알람 날짜 설정
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, month);
-                calendar.set(Calendar.DATE, dayOfMonth);
 
-                // 날짜 표시
-                displayDate();
-            }
-        }, this.calendar.get(Calendar.YEAR), this.calendar.get(Calendar.MONTH), this.calendar.get(Calendar.DAY_OF_MONTH));
-
-        dialog.show();
-    }
 
     /* 알람 등록 */
     private void setAlarm() {
+        //DB실험
+        mContext = getContext();
+        pdb = new AlarmDB (mContext); // SizerDB 연동 클래스 인스턴스
+
+
         // 알람 시간 설정
         this.calendar.set(Calendar.HOUR_OF_DAY, this.timePicker.getHour());
         this.calendar.set(Calendar.MINUTE, this.timePicker.getMinute());
@@ -91,8 +86,31 @@ public class TabFragment_Alarm extends Fragment {
             return;
         }
 
-        // Receiver 설정
+        /**
+            요일 추가하는거(레이아웃 완성되면 추가 할 부분), 비트 연산으로 해당 요일값 추가
+         int week;
+         week+=1<<view.findViewId(R.id.btnWeek1) //일요일
+         week+=1<<view.findViewId(R.id.btnWeek2) //월요일
+         week+=1<<view.findViewId(R.id.btnWeek3)
+         week+=1<<view.findViewId(R.id.btnWeek4)
+         week+=1<<view.findViewId(R.id.btnWeek5)
+         week+=1<<view.findViewId(R.id.btnWeek6)
+         week+=1<<view.findViewId(R.id.btnWeek7) //토요일
+
+         */
+
+
+
+        /**
+                Receiver 설정
+                Receiver에 알람이 울릴 요일을 전달. 1이 일요일, 7이 토요일 의미!
+                Receiver에 PID 전달
+
+         **/
+
         Intent intent = new Intent(view.getContext(), AlarmReceiver.class);
+        intent.putExtra("week",calendar.get(Calendar.DAY_OF_WEEK));
+        intent.putExtra("pid",pdb.SelectPid()+1);
         Fragment fragment =new TabFragment_Info();
         Bundle bundle =new Bundle();
         bundle.putInt("cnt",cnt);
@@ -100,9 +118,15 @@ public class TabFragment_Alarm extends Fragment {
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(view.getContext(), cnt++, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // 알람 설정
+
+        //알람 DB에 저장하기
+        pdb.insert(pdb.SelectPid()+1,calendar.get(Calendar.DAY_OF_WEEK),1,1,1,"첫 생성입니다",1,this.timePicker.getHour(),this.timePicker.getMinute());
+        int[][] t=pdb.SelectTime(pdb.SelectPid());
+        Log.d("AlarmDB",Integer.toString(pdb.SelectPid())+Integer.toString(t[0][0])+"요일"+Integer.toString(t[0][1])+"시"+Integer.toString(t[0][2])+"분");
+        // 알은 24시간만다 반복되도록 설정
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(view.getContext().ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, this.calendar.getTimeInMillis(), pendingIntent);
+        long oneday = 24 * 60 * 60 * 1000;// 24시간 마다 반복
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, this.calendar.getTimeInMillis(),oneday, pendingIntent);
 
         // Toast 보여주기 (알람 시간 표시)
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
@@ -114,11 +138,6 @@ public class TabFragment_Alarm extends Fragment {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.btnCalendar:
-                    // 달력
-                    showDatePicker();
-
-                    break;
                 case R.id.btnAlarm:
                     // 알람 등록
                     setAlarm();

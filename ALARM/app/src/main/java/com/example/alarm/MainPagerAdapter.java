@@ -15,6 +15,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
 
+
         switch (position){
             case 0:
                 TabFragment_Info tabFragment_info = new TabFragment_Info();
@@ -55,7 +56,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
             default:
                 return null;
         }
-        */
+*/
 
     }
 
