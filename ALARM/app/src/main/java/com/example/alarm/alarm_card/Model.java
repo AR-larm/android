@@ -7,7 +7,7 @@ public class Model {
     private String title;
     private String desc;
 //    private Button button;
-
+// 여기 모델 객체에 수정
     public Model(int image, String title, String desc) {
         this.image = image;
         this.title = title;

@@ -49,11 +49,11 @@ public class AlarmSetActivity extends AppCompatActivity {
         // 현재 날짜 표시
         displayDate();
 
-        this.timePicker = view.findViewById(R.id.timePicker);
+        this.timePicker = findViewById(R.id.timePicker);
         //Calender, 알람 버튼에 리스너 연결
-        view.findViewById(R.id.btnCalendar).setOnClickListener(mClickListener);
-        view.findViewById(R.id.btnAlarm).setOnClickListener(mClickListener);
-//        return view;
+        findViewById(R.id.btnCalendar).setOnClickListener(mClickListener);
+        findViewById(R.id.btnAlarm).setOnClickListener(mClickListener);
+
 
     }
 
@@ -66,7 +66,7 @@ public class AlarmSetActivity extends AppCompatActivity {
     /* 알람 등록 */
     private void setAlarm() {
         //DB실험
-        mContext = view.getContext();
+        mContext = getApplicationContext();
         pdb = new AlarmDB (mContext); // SizerDB 연동 클래스 인스턴스
 
 
@@ -77,7 +77,7 @@ public class AlarmSetActivity extends AppCompatActivity {
 
         // 현재일보다 이전이면 등록 실패
         if (this.calendar.before(Calendar.getInstance())) {
-            Toast.makeText(view.getContext(), "알람시간이 현재시간보다 이전일 수 없습니다.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "알람시간이 현재시간보다 이전일 수 없습니다.", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -101,7 +101,7 @@ public class AlarmSetActivity extends AppCompatActivity {
 
          **/
 
-        Intent intent = new Intent(view.getContext(), AlarmReceiver.class);
+        Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
 
         intent.putExtra("week",calendar.get(Calendar.DAY_OF_WEEK));
         intent.putExtra("pid",pdb.SelectPid()+1);
@@ -110,20 +110,20 @@ public class AlarmSetActivity extends AppCompatActivity {
         bundle.putInt("cnt",cnt);
         //fragment.setArguments(bundle);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(view.getContext(), cnt++, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), cnt++, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         //알람 DB에 저장하기
         pdb.insert(pdb.SelectPid()+1,calendar.get(Calendar.DAY_OF_WEEK),1,1,1,"첫 생성입니다",1,this.timePicker.getHour(),this.timePicker.getMinute());
         int[][] t=pdb.SelectTime(pdb.SelectPid());
         Log.d("AlarmDB",Integer.toString(pdb.SelectPid())+Integer.toString(t[0][0])+"요일"+Integer.toString(t[0][1])+"시"+Integer.toString(t[0][2])+"분");
         // 알은 24시간만다 반복되도록 설정
-        AlarmManager alarmManager = (AlarmManager) getSystemService(view.getContext().ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(getApplicationContext().ALARM_SERVICE);
         long oneday = 24 * 60 * 60 * 1000;// 24시간 마다 반복
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, this.calendar.getTimeInMillis(),oneday, pendingIntent);
 
         // Toast 보여주기 (알람 시간 표시)
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        Toast.makeText(view.getContext(), "Alarm : "+Integer.toString(cnt) + format.format(calendar.getTime()), Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Alarm : "+Integer.toString(cnt) + format.format(calendar.getTime()), Toast.LENGTH_LONG).show();
     }
 
     View.OnClickListener mClickListener = new View.OnClickListener() {
