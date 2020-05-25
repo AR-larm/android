@@ -4,10 +4,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
+
+import java.util.Calendar;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
+
     Context context;
+
+
+    AlarmDB  pdb;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -26,6 +33,24 @@ public class AlarmReceiver extends BroadcastReceiver {
         } else {
             context.startService(sIntent);
         }
+
+        /**
+         * 만약 켜져 있는 알람이 아니라면 자동 종료 되도록 설정,
+         */
+        int pid=intent.getIntExtra("pid",-1);
+        if(pdb.SelectActive(pid)==0){
+            return;
+        }
+
+
+        Calendar cal= Calendar.getInstance();
+        int weekday=intent.getIntExtra("week",-1);
+        //bit연산을 통해서 해당 요일이 존재하는지 검사합니다.
+        if((1<<(cal.get(Calendar.DAY_OF_WEEK))&(1<<weekday))==0){
+            Log.e("alarm","오늘은 해당 날짜가 아닙니다");
+            return;
+        }
+
 
     }
 }
