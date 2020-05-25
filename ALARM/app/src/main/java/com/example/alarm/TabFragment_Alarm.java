@@ -1,17 +1,26 @@
 package com.example.alarm;
 
+
+import android.animation.ArgbEvaluator;
+
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.content.Context;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import android.widget.Button;
+import android.widget.ImageButton;
+
 import android.widget.DatePicker;
 import android.widget.TimePicker;
+
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,10 +34,20 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import java.util.Objects;
+
+public class TabFragment_Alarm extends Fragment {
+
+    int cnt= 0;
+    ViewPager alarm_viewpager;
+    Adapter adapter;
+
 import java.util.Locale;
 
 public class TabFragment_Alarm extends Fragment {
     private View view;
+
     List<Model> models;
     Adapter adapter;
     AlarmDB  pdb;
@@ -46,6 +65,46 @@ public class TabFragment_Alarm extends Fragment {
     }
     @Nullable
     @Override
+
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.tab_fragment_alarm, null);
+
+        Button button1 = (Button)view.findViewById(R.id.btnSet);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                  Intent intent1 = new Intent(getActivity(), AlarmSetActivity.class);
+                  startActivity(intent1);
+            }
+        });
+
+//        Button button2 = (Button)view.findViewById(R.id.btnSet2);
+//        button1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ((MainActivity) Objects.requireNonNull(getActivity())).replaceFragment(TabFragment_AlarmSet.newinstance());
+//            }
+//        });
+
+//        ImageButton button3 = (ImageButton)view.findViewById(R.id.image);
+//        button1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ((MainActivity) Objects.requireNonNull(getActivity())).replaceFragment(TabFragment_AlarmSet.newinstance());
+//            }
+//        });
+
+        if(getArguments()!=null)
+        {
+            cnt=getArguments().getInt("cnt");
+            Toast.makeText(view.getContext(), "Alarm : " , Toast.LENGTH_LONG).show();
+        }
+        Toast.makeText(view.getContext(), "Alarm : " , Toast.LENGTH_LONG).show();
+        models = new ArrayList<>();
+        for(int i = 0; i< TabFragment_AlarmSet.cnt; i++)
+        {
+            models.add(new Model(R.drawable.brochure, Integer.toString(i), Integer.toString(i)+"번째알람"));
+
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedinstanceState){
         view=inflater.inflate(R.layout.tab_fragment_alarm,container,false);
         this.calendar = Calendar.getInstance();
@@ -84,6 +143,7 @@ public class TabFragment_Alarm extends Fragment {
         if (this.calendar.before(Calendar.getInstance())) {
             Toast.makeText(view.getContext(), "알람시간이 현재시간보다 이전일 수 없습니다.", Toast.LENGTH_LONG).show();
             return;
+
         }
 
         /**
@@ -100,6 +160,11 @@ public class TabFragment_Alarm extends Fragment {
          */
 
 
+
+
+            }
+        });
+        return view;
 
         /**
                 Receiver 설정
@@ -131,6 +196,7 @@ public class TabFragment_Alarm extends Fragment {
         // Toast 보여주기 (알람 시간 표시)
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         Toast.makeText(view.getContext(), "Alarm : "+Integer.toString(cnt) + format.format(calendar.getTime()), Toast.LENGTH_LONG).show();
+
     }
 
 

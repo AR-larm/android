@@ -4,15 +4,21 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.example.alarm.MainActivity;
 import com.example.alarm.R;
+import com.example.alarm.TabFragment_AlarmSet;
 
 import java.util.List;
+import java.util.Objects;
+
+import static com.google.android.material.internal.ContextUtils.getActivity;
 
 public class Adapter extends PagerAdapter {
 
@@ -43,14 +49,22 @@ public class Adapter extends PagerAdapter {
 
         ImageView imageView;
         TextView title, desc;
+//        Button button;
 
         imageView = view.findViewById(R.id.image);
         title = view.findViewById(R.id.title);
         desc = view.findViewById(R.id.desc);
+//        button = view.findViewById(R.id.btnSet2);
 
         imageView.setImageResource(models.get(position).getImage());
         title.setText(models.get(position).getTitle());
         desc.setText(models.get(position).getDesc());
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ((MainActivity) Objects.requireNonNull(getActivity())).replaceFragment(TabFragment_AlarmSet.newinstance());
+//            }
+//        });
 
         container.addView(view, 0);
 
