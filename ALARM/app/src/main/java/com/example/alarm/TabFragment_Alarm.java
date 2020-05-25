@@ -1,6 +1,7 @@
 package com.example.alarm;
 
 import android.animation.ArgbEvaluator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,17 +40,18 @@ public class TabFragment_Alarm extends Fragment {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) Objects.requireNonNull(getActivity())).replaceFragment(TabFragment_AlarmSet.newinstance());
+                  Intent intent1 = new Intent(getActivity(), AlarmSetActivity.class);
+                  startActivity(intent1);
             }
         });
 
-        Button button2 = (Button)view.findViewById(R.id.btnSet2);
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity) Objects.requireNonNull(getActivity())).replaceFragment(TabFragment_AlarmSet.newinstance());
-            }
-        });
+//        Button button2 = (Button)view.findViewById(R.id.btnSet2);
+//        button1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ((MainActivity) Objects.requireNonNull(getActivity())).replaceFragment(TabFragment_AlarmSet.newinstance());
+//            }
+//        });
 
 //        ImageButton button3 = (ImageButton)view.findViewById(R.id.image);
 //        button1.setOnClickListener(new View.OnClickListener() {
