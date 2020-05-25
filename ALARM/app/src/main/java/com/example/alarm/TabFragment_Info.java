@@ -33,7 +33,6 @@ public class TabFragment_Info extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tab_fragment_info, null);
 
-
         if(getArguments()!=null)
         {
             cnt=getArguments().getInt("cnt");

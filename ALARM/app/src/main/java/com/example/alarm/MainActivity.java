@@ -6,16 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
-
         import androidx.appcompat.app.AppCompatActivity;
         import androidx.viewpager.widget.ViewPager;
-
 
         import com.google.android.material.tabs.TabLayout;
 
@@ -89,23 +81,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        //시작 프래그먼트 설정가능
-//        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//        fragmentTransaction.add(R.id.viewpager, TabFragment_AlarmSet.newinstance()).commit();
 
     }
-
-
-    public void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        //fragment로 사용할 레이아웃 공간.
-        fragmentTransaction.replace(R.id.tabout, fragment);
-        //fragmentTransaction.add(R.id.viewpager, fragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
-    }
-
     // DB가 있나 체크하기
     public boolean isCheckDB(Context mContext){
         String filePath = "/data/data/" + getPackageName() + "/databases/alarm.db";
@@ -162,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
             Log.e("ErrorMessage : ", e.getMessage());
         }
     }
+
 
 
 
