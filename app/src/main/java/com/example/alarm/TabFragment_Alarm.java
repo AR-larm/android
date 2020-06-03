@@ -34,7 +34,7 @@ public class TabFragment_Alarm extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tab_fragment_alarm, null);
 
-        Button button1 = (Button)view.findViewById(R.id.btnSet);
+        Button button1 = (Button)view.findViewById(R.id.newalarm_button);
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

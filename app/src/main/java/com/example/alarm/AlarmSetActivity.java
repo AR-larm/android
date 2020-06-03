@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,6 +28,8 @@ public class AlarmSetActivity extends AppCompatActivity {
     private TimePicker timePicker;
     //public static TabFragment_Alarm
 
+    private ToggleButton _toggleSun, _toggleMon, _toggleTue, _toggleWed, _toggleThu, _toggleFri, _toggleSat;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +44,13 @@ public class AlarmSetActivity extends AppCompatActivity {
         findViewById(R.id.btnCalendar).setOnClickListener(mClickListener);
         findViewById(R.id.btnAlarm).setOnClickListener(mClickListener);
 
-
+        _toggleSun = (ToggleButton) findViewById(R.id.btnWeek1);
+        _toggleMon = (ToggleButton) findViewById(R.id.btnWeek2);
+        _toggleTue = (ToggleButton) findViewById(R.id.btnWeek3);
+        _toggleWed = (ToggleButton) findViewById(R.id.btnWeek4);
+        _toggleThu = (ToggleButton) findViewById(R.id.btnWeek5);
+        _toggleFri = (ToggleButton) findViewById(R.id.btnWeek6);
+        _toggleSat = (ToggleButton) findViewById(R.id.btnWeek7);
     }
 
     /* 날짜 표시 */
@@ -70,15 +79,27 @@ public class AlarmSetActivity extends AppCompatActivity {
 
         /**
          요일 추가하는거(레이아웃 완성되면 추가 할 부분), 비트 연산으로 해당 요일값 추가
-         int week;
-         week+=1<<view.findViewId(R.id.btnWeek1) //일요일
-         week+=1<<view.findViewId(R.id.btnWeek2) //월요일
-         week+=1<<view.findViewId(R.id.btnWeek3)
-         week+=1<<view.findViewId(R.id.btnWeek4)
-         week+=1<<view.findViewId(R.id.btnWeek5)
-         week+=1<<view.findViewId(R.id.btnWeek6)
-         week+=1<<view.findViewId(R.id.btnWeek7) //토요일
 
+        int week = 0;
+        week+=1<<findViewById(R.id.btnWeek1) //일요일
+        week+=1<<view.findViewId(R.id.btnWeek2) //월요일
+        week+=1<<view.findViewId(R.id.btnWeek3)
+        week+=1<<view.findViewId(R.id.btnWeek4)
+        week+=1<<view.findViewId(R.id.btnWeek5)
+        week+=1<<view.findViewId(R.id.btnWeek6)
+        week+=1<<view.findViewId(R.id.btnWeek7) //토요일
+         **/
+
+        /**
+         * 비트연산말고 배열로 해보는 중, 데이터베이스와 연관되어, 다시 비트 연산으로 개발하려는 중.
+         * weekday
+         * boolean[] weekday = { false, _toggleSun.isChecked(), _toggleMon.isChecked(), _toggleTue.isChecked(), _toggleWed.isChecked(),
+         *                 _toggleThu.isChecked(), _toggleFri.isChecked(), _toggleSat.isChecked() }; // sunday=1 이라서 0의 자리에는 아무 값이나 넣었음
+         */
+
+        /**
+         * 태그 값을 전달할 부분 구현 필요.
+         * EditText id: memoedit
          */
 
         /**
@@ -87,6 +108,8 @@ public class AlarmSetActivity extends AppCompatActivity {
          Receiver에 PID 전달
 
          **/
+
+        // https://wonjerry.tistory.com/19 앱 꺼져도 다시 알람 만들 수 있는.
 
         Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
 

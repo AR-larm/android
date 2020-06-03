@@ -125,6 +125,7 @@
                         android:textSize="70sp"
                         android:ellipsize="end">
                     </TextView>
+                    <!-- 날씨 텍스트 부분 수정 필요-->
                     <TextView
                         android:id="@+id/info_weatherplace"
                         android:layout_width="match_parent"

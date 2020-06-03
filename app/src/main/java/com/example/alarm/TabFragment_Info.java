@@ -69,20 +69,32 @@ public class TabFragment_Info extends Fragment {
         super.onCreate(savedInstanceState);
 
     }
-    public void checkPermission(Context context){
+
+    public void checkPermission(Context context) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(context,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-        ){//Can add more as per requirement
+                ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        ) {//Can add more as per requirement
 
             ActivityCompat.requestPermissions(Objects.requireNonNull(getActivity()),
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
                     123);
         }
     }
+
     public synchronized void getLastLocation(Context context) {
         // Get last known recent location using new Google Play Services SDK (v11+)
         FusedLocationProviderClient locationClient = getFusedLocationProviderClient(context);
         System.out.println("HEllo WOrldd Locxation");
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         locationClient.getLastLocation()
                 .addOnSuccessListener(new OnSuccessListener<Location>() {
                     @Override
@@ -92,12 +104,12 @@ public class TabFragment_Info extends Fragment {
                             Log.d("", "LOCATION");
                             Log.d("", _location.toString());
                             location.set(_location);
-                            System.out.println("AAA"+location.getLatitude() +" "+ location.getLongitude());
+                            System.out.println("AAA" + location.getLatitude() + " " + location.getLongitude());
                             AsyncHttpClient client = new AsyncHttpClient();
                             setWeather(client, location.getLatitude(), location.getLongitude(), infoWeatherTemp);
 
-                            TextView [] infoMaskTitleArr  = {infoMaskTitle1, infoMaskTitle2, infoMaskTitle3};
-                            TextView [] infoMaskBodyArr  = {infoMaskBody1, infoMaskBody2, infoMaskBody3,};
+                            TextView[] infoMaskTitleArr = {infoMaskTitle1, infoMaskTitle2, infoMaskTitle3};
+                            TextView[] infoMaskBodyArr = {infoMaskBody1, infoMaskBody2, infoMaskBody3,};
                             setMask(client, location.getLatitude(), location.getLongitude(), infoMaskTitleArr, infoMaskBodyArr);
                         }
                     }
@@ -134,6 +146,7 @@ public class TabFragment_Info extends Fragment {
         getLastLocation(context);
 
         infoWeatherTemp = (TextView) view.findViewById((R.id.info_weathertempur));
+
         AsyncHttpClient client = new AsyncHttpClient();
         // Current News to display
 
@@ -219,7 +232,7 @@ public class TabFragment_Info extends Fragment {
                     Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
                     infoNewsImg.setImageBitmap(bmp);
                     // Description Set
-                    infoNewsBody.setText(main.getJSONObject(0).getString("description").substring(0, 35)+"...");
+                    infoNewsBody.setText(main.getJSONObject(0).getString("description").substring(0, 20)+"...");
                     // Title Set
                     infoNewsTitle.setText(main.getJSONObject(0).getString("title").substring(0, 20)+"...");
                     class NewsOnClickListener implements View.OnClickListener
@@ -259,9 +272,12 @@ public class TabFragment_Info extends Fragment {
                 // If the response is JSONObject instead of expected JSONArray
                 JSONObject main = null;
                 String _temperature = "";
+//                JSONObject city = null;
+//                city = response.;
                 try {
                     main = response.getJSONObject("main");
                     _temperature = main.getString("temp");
+
                 } catch (JSONException e) {
                     Log.d("", "ERROR");
                 }
@@ -269,7 +285,7 @@ public class TabFragment_Info extends Fragment {
                 temperature = _temperature;
                 System.out.println((temperature));
                 try {
-                    infoWeatherTemp.setText(temperature.substring(0, 4)+"ºc");
+                    infoWeatherTemp.setText(temperature.substring(0, 4)+"ºc"); //0,2 로 안 바꿔도 되던데
                 }
                 catch (Exception e){
                     infoWeatherTemp.setText(temperature+"ºc");
